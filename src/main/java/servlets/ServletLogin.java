@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
 //o chamado Controller sao as servlets ou ServletsLoginController
-@WebServlet ("/ServetLogin")/*mapeamento de URL que vem da tela*/
+@WebServlet (urlPatterns = {"/principal/ServletLogin"})/*mapeamento de URL que vem da tela*/
 public class ServletLogin  extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -33,6 +33,7 @@ public class ServletLogin  extends HttpServlet {
 	protected void doPost /*recebe os dadods enviado spor um formualiro*/(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String login = request.getParameter("login");
 		String senha = request.getParameter("senha");
+		String url = request.getParameter("url");
 		
 		
 		
@@ -46,7 +47,13 @@ public class ServletLogin  extends HttpServlet {
 				&& modelLogin.getSenha().equalsIgnoreCase("admin")) { //simulando login
 				
 				request.getSession().setAttribute("usuario", modelLogin.getLogin());
-				RequestDispatcher redirecionar = request.getRequestDispatcher("principal/principal.jsp");//redireciona para o principal
+				
+				if (url==null || url.equals("null")) {
+					url = "principal/principal.jsp";
+					
+				}
+				
+				RequestDispatcher redirecionar = request.getRequestDispatcher(url);//redireciona para o principal
 				redirecionar.forward(request, response);
 				
 			}else {
